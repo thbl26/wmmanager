@@ -1,63 +1,89 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Bundesliga Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WM 2026 Manager</title>
 
 <style>
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: #eef2f7;
   text-align: center;
+  margin: 0;
 }
 
 h1 {
   background: #d00000;
   color: white;
   padding: 15px;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 10px 0 20px;
+  color: #333;
+}
+
+.topbar {
+  background: white;
+  margin: 16px auto;
+  padding: 12px;
+  width: min(950px, calc(100% - 24px));
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.topbar select,
+.topbar button {
+  margin: 4px;
 }
 
 .match {
   background: white;
   margin: 12px auto;
   padding: 18px;
-  width: 650px;
+  width: min(850px, calc(100% - 24px));
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   min-height: 70px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  flex-wrap: wrap;
 }
 
-.match select,
-.match input {
-  padding: 8px;
-  font-size: 14px;
+.teamSide {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 230px;
+  justify-content: center;
+}
+
+.teamName {
+  font-weight: bold;
+}
+
+.flag {
+  width: 45px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+  background: #eee;
 }
 
 .match input {
   width: 55px;
   text-align: center;
   font-size: 16px;
-}
-
-.match img {
-  width: 45px;
-  height: 45px;
-  object-fit: contain;
-  flex-shrink: 0;
-  image-rendering: auto;
-  transform: translateZ(0);
+  padding: 8px;
 }
 
 button {
-  margin-top: 5px;
-  padding: 6px 12px;
+  padding: 7px 12px;
   border: none;
   background: #0077cc;
   color: white;
@@ -69,11 +95,20 @@ button:hover {
   background: #005fa3;
 }
 
+button.danger {
+  background: #b00020;
+}
+
+button.danger:hover {
+  background: #820018;
+}
+
 table {
   margin: 20px auto;
   border-collapse: collapse;
-  width: 650px;
+  width: min(850px, calc(100% - 24px));
   background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 th, td {
@@ -88,406 +123,515 @@ th {
 
 td img {
   width: 28px;
-  height: 28px;
-  object-fit: contain;
+  height: 20px;
+  object-fit: cover;
   vertical-align: middle;
   margin-right: 6px;
+  border-radius: 3px;
+}
+
+.groupGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 16px;
+  width: min(1200px, calc(100% - 24px));
+  margin: 20px auto;
+}
+
+.groupCard {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.groupCard table {
+  width: 100%;
+  margin: 8px 0 0;
+  box-shadow: none;
+}
+
+.koGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  width: min(1300px, calc(100% - 24px));
+  margin: 20px auto;
+}
+
+.koRound {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.koMatch {
+  background: #f7f9fc;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.koTeams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 6px;
+}
+
+.koTeams input {
+  width: 40px;
+  text-align: center;
+  padding: 5px;
+}
+
+.small {
+  color: #666;
+  font-size: 13px;
+}
+
+.notice {
+  background: #fff5d6;
+  border: 1px solid #f0d47a;
+  padding: 10px;
+  border-radius: 10px;
+  width: min(850px, calc(100% - 24px));
+  margin: 12px auto;
+}
+
+@media(max-width: 700px) {
+  .teamSide {
+    min-width: 140px;
+  }
+  .match {
+    padding: 12px;
+  }
+  .flag {
+    width: 38px;
+    height: 27px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<h1>⚽ Bundesliga Manager</h1>
+<h1>🏆 WM Manager 2026</h1>
+<div class="subtitle">Im Stil deines Bundesliga-Managers — mit Länderflaggen, Gruppenphase und K.-o.-Runde</div>
 
-<label>Spieltag:</label>
-<select id="matchday" onchange="changeMatchday()"></select>
+<div class="topbar">
+  <label>Ansicht:</label>
+  <select id="view" onchange="changeView()">
+    <option value="matches">Gruppenspiele</option>
+    <option value="tables">Tabellen</option>
+    <option value="ko">K.-o.-Phase</option>
+  </select>
 
-<div id="matches"></div>
+  <label id="groupLabel">Gruppe:</label>
+  <select id="groupSelect" onchange="render()"></select>
 
-<button onclick="addMatch()">➕ Spiel hinzufügen</button>
+  <button onclick="resetAll()" class="danger">Alles zurücksetzen</button>
+</div>
 
-<h2>📊 Tabelle</h2>
-<table>
-<thead>
-<tr>
-<th>Team</th>
-<th>Punkte</th>
-<th>Tore</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
+<div id="content"></div>
 
 <script>
-
 const fallbackLogo = "https://upload.wikimedia.org/wikipedia/commons/8/84/No_Image_Available.jpg";
 
-/* ⚽ TEAMS */
-const teams = [
-{name:"Bayern", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/132.png"},
-{name:"Dortmund", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/124.png"},
-{name:"Leipzig", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/11420.png"},
-{name:"Leverkusen", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/131.png"},
-{name:"Stuttgart", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/134.png"},
-{name:"Frankfurt", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/125.png"},
-{name:"Freiburg", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/126.png"},
-{name:"Union", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/598.png"},
-{name:"Wolfsburg", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/138.png"},
-{name:"Mainz", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/2950.png"},
-{name:"Gladbach", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/268.png"},
-{name:"Köln", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/122.png"},
+const teams = {
+  "MEX": {name:"Mexiko", flag:"https://flagcdn.com/w80/mx.png"},
+  "RSA": {name:"Südafrika", flag:"https://flagcdn.com/w80/za.png"},
+  "KOR": {name:"Südkorea", flag:"https://flagcdn.com/w80/kr.png"},
+  "CZE": {name:"Tschechien", flag:"https://flagcdn.com/w80/cz.png"},
 
-{name:"Heidenheim", logo:"transfer/heidenheim.png"},
-{name:"St. Pauli", logo:"transfer/stpauli.png"},
-{name:"Hamburg", logo:"transfer/hsv.png"},
-{name:"Augsburg", logo:"transfer/augsburg.png"},
-{name:"Hoffenheim", logo:"transfer/hoffenheim.png"},
+  "CAN": {name:"Kanada", flag:"https://flagcdn.com/w80/ca.png"},
+  "BIH": {name:"Bosnien-Herzegowina", flag:"https://flagcdn.com/w80/ba.png"},
+  "QAT": {name:"Katar", flag:"https://flagcdn.com/w80/qa.png"},
+  "SUI": {name:"Schweiz", flag:"https://flagcdn.com/w80/ch.png"},
 
-{name:"Bremen", logo:"https://a.espncdn.com/i/teamlogos/soccer/500/137.png"}
+  "BRA": {name:"Brasilien", flag:"https://flagcdn.com/w80/br.png"},
+  "MAR": {name:"Marokko", flag:"https://flagcdn.com/w80/ma.png"},
+  "HTI": {name:"Haiti", flag:"https://flagcdn.com/w80/ht.png"},
+  "SCO": {name:"Schottland", flag:"https://flagcdn.com/w80/gb-sct.png"},
+
+  "USA": {name:"USA", flag:"https://flagcdn.com/w80/us.png"},
+  "PAR": {name:"Paraguay", flag:"https://flagcdn.com/w80/py.png"},
+  "AUS": {name:"Australien", flag:"https://flagcdn.com/w80/au.png"},
+  "TUR": {name:"Türkei", flag:"https://flagcdn.com/w80/tr.png"},
+
+  "GER": {name:"Deutschland", flag:"https://flagcdn.com/w80/de.png"},
+  "CUW": {name:"Curaçao", flag:"https://flagcdn.com/w80/cw.png"},
+  "CIV": {name:"Elfenbeinküste", flag:"https://flagcdn.com/w80/ci.png"},
+  "ECU": {name:"Ecuador", flag:"https://flagcdn.com/w80/ec.png"},
+
+  "NED": {name:"Niederlande", flag:"https://flagcdn.com/w80/nl.png"},
+  "JPN": {name:"Japan", flag:"https://flagcdn.com/w80/jp.png"},
+  "SWE": {name:"Schweden", flag:"https://flagcdn.com/w80/se.png"},
+  "TUN": {name:"Tunesien", flag:"https://flagcdn.com/w80/tn.png"},
+
+  "BEL": {name:"Belgien", flag:"https://flagcdn.com/w80/be.png"},
+  "EGY": {name:"Ägypten", flag:"https://flagcdn.com/w80/eg.png"},
+  "IRI": {name:"Iran", flag:"https://flagcdn.com/w80/ir.png"},
+  "NZL": {name:"Neuseeland", flag:"https://flagcdn.com/w80/nz.png"},
+
+  "ESP": {name:"Spanien", flag:"https://flagcdn.com/w80/es.png"},
+  "CPV": {name:"Kap Verde", flag:"https://flagcdn.com/w80/cv.png"},
+  "KSA": {name:"Saudi-Arabien", flag:"https://flagcdn.com/w80/sa.png"},
+  "URU": {name:"Uruguay", flag:"https://flagcdn.com/w80/uy.png"},
+
+  "FRA": {name:"Frankreich", flag:"https://flagcdn.com/w80/fr.png"},
+  "SEN": {name:"Senegal", flag:"https://flagcdn.com/w80/sn.png"},
+  "IRQ": {name:"Irak", flag:"https://flagcdn.com/w80/iq.png"},
+  "NOR": {name:"Norwegen", flag:"https://flagcdn.com/w80/no.png"},
+
+  "ARG": {name:"Argentinien", flag:"https://flagcdn.com/w80/ar.png"},
+  "DZA": {name:"Algerien", flag:"https://flagcdn.com/w80/dz.png"},
+  "AUT": {name:"Österreich", flag:"https://flagcdn.com/w80/at.png"},
+  "JOR": {name:"Jordanien", flag:"https://flagcdn.com/w80/jo.png"},
+
+  "POR": {name:"Portugal", flag:"https://flagcdn.com/w80/pt.png"},
+  "COD": {name:"DR Kongo", flag:"https://flagcdn.com/w80/cd.png"},
+  "UZB": {name:"Usbekistan", flag:"https://flagcdn.com/w80/uz.png"},
+  "COL": {name:"Kolumbien", flag:"https://flagcdn.com/w80/co.png"},
+
+  "ENG": {name:"England", flag:"https://flagcdn.com/w80/gb-eng.png"},
+  "CRO": {name:"Kroatien", flag:"https://flagcdn.com/w80/hr.png"},
+  "GHA": {name:"Ghana", flag:"https://flagcdn.com/w80/gh.png"},
+  "PAN": {name:"Panama", flag:"https://flagcdn.com/w80/pa.png"}
+};
+
+const groups = {
+  A:["MEX","RSA","KOR","CZE"],
+  B:["CAN","BIH","QAT","SUI"],
+  C:["BRA","MAR","HTI","SCO"],
+  D:["USA","PAR","AUS","TUR"],
+  E:["GER","CUW","CIV","ECU"],
+  F:["NED","JPN","SWE","TUN"],
+  G:["BEL","EGY","IRI","NZL"],
+  H:["ESP","CPV","KSA","URU"],
+  I:["FRA","SEN","IRQ","NOR"],
+  J:["ARG","DZA","AUT","JOR"],
+  K:["POR","COD","UZB","COL"],
+  L:["ENG","CRO","GHA","PAN"]
+};
+
+const defaultMatches = [
+  ["A","MEX","RSA"],["A","KOR","CZE"],["A","CZE","RSA"],["A","MEX","KOR"],["A","CZE","MEX"],["A","RSA","KOR"],
+  ["B","CAN","BIH"],["B","QAT","SUI"],["B","SUI","BIH"],["B","CAN","QAT"],["B","SUI","CAN"],["B","BIH","QAT"],
+  ["C","BRA","MAR"],["C","HTI","SCO"],["C","SCO","MAR"],["C","BRA","HTI"],["C","SCO","BRA"],["C","MAR","HTI"],
+  ["D","USA","PAR"],["D","AUS","TUR"],["D","USA","AUS"],["D","TUR","PAR"],["D","TUR","USA"],["D","PAR","AUS"],
+  ["E","GER","CUW"],["E","CIV","ECU"],["E","GER","CIV"],["E","ECU","CUW"],["E","ECU","GER"],["E","CUW","CIV"],
+  ["F","NED","JPN"],["F","SWE","TUN"],["F","NED","SWE"],["F","TUN","JPN"],["F","TUN","NED"],["F","JPN","SWE"],
+  ["G","BEL","EGY"],["G","IRI","NZL"],["G","BEL","IRI"],["G","NZL","EGY"],["G","NZL","BEL"],["G","EGY","IRI"],
+  ["H","ESP","CPV"],["H","KSA","URU"],["H","ESP","KSA"],["H","URU","CPV"],["H","URU","ESP"],["H","CPV","KSA"],
+  ["I","FRA","SEN"],["I","IRQ","NOR"],["I","FRA","IRQ"],["I","NOR","SEN"],["I","NOR","FRA"],["I","SEN","IRQ"],
+  ["J","ARG","DZA"],["J","AUT","JOR"],["J","ARG","AUT"],["J","JOR","DZA"],["J","JOR","ARG"],["J","DZA","AUT"],
+  ["K","POR","COD"],["K","UZB","COL"],["K","POR","UZB"],["K","COL","COD"],["K","COL","POR"],["K","COD","UZB"],
+  ["L","ENG","CRO"],["L","GHA","PAN"],["L","ENG","GHA"],["L","PAN","CRO"],["L","PAN","ENG"],["L","CRO","GHA"]
+].map((m,i)=>({id:"G"+(i+1), group:m[0], team1:m[1], team2:m[2], t1:"", t2:""}));
+
+const koRounds = [
+  {key:"R32", name:"Sechzehntelfinale", count:16},
+  {key:"R16", name:"Achtelfinale", count:8},
+  {key:"QF", name:"Viertelfinale", count:4},
+  {key:"SF", name:"Halbfinale", count:2},
+  {key:"P3", name:"Spiel um Platz 3", count:1},
+  {key:"F", name:"Finale", count:1}
 ];
 
-function getLogo(name){
-  const team = teams.find(t => t.name === name);
-  return team ? team.logo : fallbackLogo;
+function img(code){
+  if(!code || !teams[code]) return "";
+  return `<img src="${teams[code].flag}" onerror="this.src='${fallbackLogo}'">`;
 }
 
-function teamOptions(selected){
-  return teams.map(t =>
-    <option value="${t.name}" ${t.name===selected?"selected":""}>${t.name}</option>
-  ).join("");
+function teamLabel(code){
+  if(!code) return "offen";
+  if(!teams[code]) return code;
+  return `${img(code)} ${teams[code].name}`;
 }
 
 function loadData(){
-  return JSON.parse(localStorage.getItem("bundesliga") || "{}");
+  return JSON.parse(localStorage.getItem("wmManager2026") || "{}");
 }
 
 function saveData(data){
-  localStorage.setItem("bundesliga", JSON.stringify(data));
+  localStorage.setItem("wmManager2026", JSON.stringify(data));
 }
 
-function currentDay(){
-  return document.getElementById("matchday").value;
-}
-
-function renderMatchdays(){
-  let select = document.getElementById("matchday");
-  let html = "";
-  for(let i=1;i<=34;i++){
-    html += <option value="${i}">Spieltag ${i}</option>;
+function getMatches(){
+  const data = loadData();
+  if(!data.matches) {
+    data.matches = defaultMatches;
+    saveData(data);
   }
-  select.innerHTML = html;
+  return data.matches;
 }
 
-function changeMatchday(){
-  renderMatches();
-  renderTable();
-}
-
-/* ✅ FIX: stabile Dropdowns ohne Flackern */
-function renderMatches(){
-  let data = loadData();
-  let day = currentDay();
-  let matches = data[day] || [];
-
-  let html = "";
-
-  matches.forEach((m,i)=>{
-    html += 
-    <div class="match">
-
-      <img src="${getLogo(m.team1)}" loading="lazy" decoding="async"
-      onerror="this.src='${fallbackLogo}'">
-
-      <select id="team1-${i}">${teamOptions(m.team1)}</select>
-
-      <input type="number" id="t1-${i}" value="${m.t1||""}">
-      <span style="font-size:18px;">:</span>
-      <input type="number" id="t2-${i}" value="${m.t2||""}">
-
-      <select id="team2-${i}">${teamOptions(m.team2)}</select>
-
-      <img src="${getLogo(m.team2)}" loading="lazy" decoding="async"
-      onerror="this.src='${fallbackLogo}'">
-
-      <button onclick="save(${i})">Speichern</button>
-      <button onclick="removeMatch(${i})">❌</button>
-
-    </div>;
-  });
-
-  document.getElementById("matches").innerHTML = html;
-
-  /* 🔥 WICHTIG: Events nach Render stabilisieren */
-  document.querySelectorAll("select").forEach(sel=>{
-    sel.onchange = () => {
-      saveAuto();
-    };
-  });
-}
-
-/* ⚡ Autosave ohne Re-Render (fix für Dropdown-Bug) */
-function saveAuto(){
-  let data = loadData();
-  let day = currentDay();
-  let matches = data[day];
-
-  document.querySelectorAll(".match").forEach((el,i)=>{
-    if(!matches[i]) return;
-
-    matches[i].team1 = document.getElementById(team1-${i}).value;
-    matches[i].team2 = document.getElementById(team2-${i}).value;
-    matches[i].t1 = document.getElementById(t1-${i}).value;
-    matches[i].t2 = document.getElementById(t2-${i}).value;
-  });
-
-  saveData(data);
-  renderTable();
-}
-
-function addMatch(){
-  let data = loadData();
-  let day = currentDay();
-
-  if(!data[day]) data[day]=[];
-
-  data[day].push({
-    team1: teams[0].name,
-    team2: teams[1].name,
-    t1:"", t2:""
-  });
-
-  saveData(data);
-  renderMatches();
-}
-
-function removeMatch(i){
-  let data = loadData();
-  let day = currentDay();
-
-  data[day].splice(i,1);
-
-  saveData(data);
-  renderMatches();
-  renderTable();
-}
-
-function save(i){
-  saveAuto();
-}
-
-function renderTable(){
-  let data = loadData();
-  let table = {};
-
-  teams.forEach(t=>{
-    table[t.name]={points:0, goals:0};
-  });
-
-  Object.values(data).forEach(day=>{
-    day.forEach(m=>{
-      if(m.t1==="" || m.t2==="") return;
-
-      let t1 = parseInt(m.t1) || 0;
-      let t2 = parseInt(m.t2) || 0;
-
-      table[m.team1].goals += t1;
-      table[m.team2].goals += t2;
-
-      if(t1 > t2) table[m.team1].points += 3;
-      else if(t2 > t1) table[m.team2].points += 3;
-      else {
-        table[m.team1].points += 1;
-        table[m.team2].points += 1;
+function getKo(){
+  const data = loadData();
+  if(!data.ko) {
+    data.ko = {};
+    koRounds.forEach(r=>{
+      data.ko[r.key] = [];
+      for(let i=0;i<r.count;i++){
+        data.ko[r.key].push({t1:"", t2:"", team1:"", team2:""});
       }
     });
-  });
-
-  let sorted = Object.entries(table)
-    .sort((a,b)=>b[1].points - a[1].points || b[1].goals - a[1].goals);
-
-  let html="";
-  sorted.forEach(([team,val])=>{
-    html+=<tr>
-      <td><img src="${getLogo(team)}"> ${team}</td>
-      <td>${val.points}</td>
-      <td>${val.goals}</td>
-    </tr>;
-  });
-
-  document.getElementById("table").innerHTML=html;
+    saveData(data);
+  }
+  return data.ko;
 }
 
-renderMatchdays();
-renderMatches();
-renderTable();
+function saveMatch(id, field, value){
+  const data = loadData();
+  data.matches = data.matches || defaultMatches;
+  const m = data.matches.find(x=>x.id===id);
+  if(m) m[field] = value;
+  saveData(data);
+  render();
+}
 
+function saveKo(round, index, field, value){
+  const data = loadData();
+  data.ko = getKo();
+  data.ko[round][index][field] = value;
+  saveData(data);
+}
+
+function initSelectors(){
+  const groupSelect = document.getElementById("groupSelect");
+  groupSelect.innerHTML = Object.keys(groups).map(g=>`<option value="${g}">Gruppe ${g}</option>`).join("");
+}
+
+function changeView(){
+  const view = document.getElementById("view").value;
+  document.getElementById("groupSelect").style.display = view==="matches" ? "inline-block" : "none";
+  document.getElementById("groupLabel").style.display = view==="matches" ? "inline-block" : "none";
+  render();
+}
+
+function render(){
+  const view = document.getElementById("view").value;
+  if(view === "matches") renderMatches();
+  if(view === "tables") renderAllTables();
+  if(view === "ko") renderKo();
+}
+
+function renderMatches(){
+  const group = document.getElementById("groupSelect").value;
+  const matches = getMatches().filter(m=>m.group===group);
+  let html = `<h2>⚽ Gruppenspiele Gruppe ${group}</h2>`;
+
+  matches.forEach(m=>{
+    html += `
+    <div class="match">
+      <div class="teamSide">${img(m.team1)} <span class="teamName">${teams[m.team1].name}</span></div>
+      <input type="number" value="${m.t1}" onchange="saveMatch('${m.id}','t1',this.value)">
+      <span style="font-size:18px;">:</span>
+      <input type="number" value="${m.t2}" onchange="saveMatch('${m.id}','t2',this.value)">
+      <div class="teamSide">${img(m.team2)} <span class="teamName">${teams[m.team2].name}</span></div>
+    </div>`;
+  });
+
+  html += `<h2>📊 Tabelle Gruppe ${group}</h2>`;
+  html += renderTable(group);
+  document.getElementById("content").innerHTML = html;
+}
+
+function calcTable(group){
+  const table = {};
+  groups[group].forEach(code=>{
+    table[code] = {team:code, points:0, gf:0, ga:0, gd:0, played:0, wins:0, draws:0, losses:0};
+  });
+
+  getMatches().filter(m=>m.group===group).forEach(m=>{
+    if(m.t1==="" || m.t2==="") return;
+
+    const a = parseInt(m.t1);
+    const b = parseInt(m.t2);
+    if(Number.isNaN(a) || Number.isNaN(b)) return;
+
+    const home = table[m.team1];
+    const away = table[m.team2];
+
+    home.played++; away.played++;
+    home.gf += a; home.ga += b;
+    away.gf += b; away.ga += a;
+
+    if(a>b){ home.points+=3; home.wins++; away.losses++; }
+    else if(b>a){ away.points+=3; away.wins++; home.losses++; }
+    else { home.points++; away.points++; home.draws++; away.draws++; }
+  });
+
+  Object.values(table).forEach(t=>t.gd = t.gf - t.ga);
+
+  return Object.values(table).sort((a,b)=>
+    b.points-a.points ||
+    b.gd-a.gd ||
+    b.gf-a.gf ||
+    teams[a.team].name.localeCompare(teams[b.team].name)
+  );
+}
+
+function renderTable(group){
+  const sorted = calcTable(group);
+  let html = `<table><thead><tr>
+    <th>Platz</th><th>Team</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff</th><th>Punkte</th>
+  </tr></thead><tbody>`;
+
+  sorted.forEach((t,i)=>{
+    html += `<tr>
+      <td>${i+1}</td>
+      <td>${teamLabel(t.team)}</td>
+      <td>${t.played}</td>
+      <td>${t.wins}</td>
+      <td>${t.draws}</td>
+      <td>${t.losses}</td>
+      <td>${t.gf}:${t.ga}</td>
+      <td>${t.gd}</td>
+      <td><b>${t.points}</b></td>
+    </tr>`;
+  });
+
+  html += "</tbody></table>";
+  return html;
+}
+
+function renderAllTables(){
+  let html = `<h2>📊 Alle Gruppentabellen</h2><div class="groupGrid">`;
+  Object.keys(groups).forEach(g=>{
+    html += `<div class="groupCard"><h3>Gruppe ${g}</h3>${renderTable(g)}</div>`;
+  });
+  html += `</div>`;
+  document.getElementById("content").innerHTML = html;
+}
+
+function qualifiers(){
+  const first = [];
+  const second = [];
+  const thirds = [];
+
+  Object.keys(groups).forEach(g=>{
+    const t = calcTable(g);
+    first.push(t[0].team);
+    second.push(t[1].team);
+    thirds.push({...t[2], group:g});
+  });
+
+  thirds.sort((a,b)=>
+    b.points-a.points ||
+    b.gd-a.gd ||
+    b.gf-a.gf ||
+    teams[a.team].name.localeCompare(teams[b.team].name)
+  );
+
+  return [...first, ...second, ...thirds.slice(0,8).map(x=>x.team)];
+}
+
+function autoFillKo(){
+  const q = qualifiers();
+  const data = loadData();
+  data.ko = getKo();
+
+  for(let i=0;i<16;i++){
+    data.ko.R32[i].team1 = q[i] || "";
+    data.ko.R32[i].team2 = q[31-i] || "";
+  }
+
+  saveData(data);
+  renderKo();
+}
+
+function winner(m){
+  const a = parseInt(m.t1);
+  const b = parseInt(m.t2);
+  if(Number.isNaN(a) || Number.isNaN(b) || !m.team1 || !m.team2 || a===b) return "";
+  return a>b ? m.team1 : m.team2;
+}
+
+function fillNextRounds(){
+  const data = loadData();
+  data.ko = getKo();
+  const pairs = [
+    ["R32","R16"],
+    ["R16","QF"],
+    ["QF","SF"],
+    ["SF","F"]
+  ];
+
+  pairs.forEach(([from,to])=>{
+    for(let i=0;i<data.ko[to].length;i++){
+      const w1 = winner(data.ko[from][i*2]);
+      const w2 = winner(data.ko[from][i*2+1]);
+      if(w1) data.ko[to][i].team1 = w1;
+      if(w2) data.ko[to][i].team2 = w2;
+    }
+  });
+
+  const sf1 = data.ko.SF[0];
+  const sf2 = data.ko.SF[1];
+  function loser(m){
+    const a = parseInt(m.t1);
+    const b = parseInt(m.t2);
+    if(Number.isNaN(a) || Number.isNaN(b) || !m.team1 || !m.team2 || a===b) return "";
+    return a>b ? m.team2 : m.team1;
+  }
+  data.ko.P3[0].team1 = loser(sf1) || data.ko.P3[0].team1;
+  data.ko.P3[0].team2 = loser(sf2) || data.ko.P3[0].team2;
+
+  saveData(data);
+  renderKo();
+}
+
+function renderKo(){
+  const ko = getKo();
+  let html = `
+    <h2>🏆 K.-o.-Phase</h2>
+    <div class="notice">
+      <b>Hinweis:</b> Klicke zuerst auf „KO aus Tabellen befüllen“. Danach kannst du Ergebnisse eintragen.
+      Bei Gleichstand wird noch kein Sieger übernommen — dann bitte z. B. nach Elfmeterschießen ein Siegergebnis eintragen.
+    </div>
+    <button onclick="autoFillKo()">KO aus Tabellen befüllen</button>
+    <button onclick="fillNextRounds()">Sieger weiter übernehmen</button>
+    <div class="koGrid">
+  `;
+
+  koRounds.forEach(round=>{
+    html += `<div class="koRound"><h3>${round.name}</h3>`;
+    ko[round.key].forEach((m,i)=>{
+      html += `<div class="koMatch">
+        <div class="small">Spiel ${i+1}</div>
+        <div class="koTeams">
+          <div>${teamLabel(m.team1)}</div>
+          <div>
+            <input type="number" value="${m.t1}" onchange="saveKo('${round.key}',${i},'t1',this.value)">
+            :
+            <input type="number" value="${m.t2}" onchange="saveKo('${round.key}',${i},'t2',this.value)">
+          </div>
+          <div>${teamLabel(m.team2)}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById("content").innerHTML = html;
+}
+
+function resetAll(){
+  if(confirm("Wirklich alle Ergebnisse löschen?")){
+    localStorage.removeItem("wmManager2026");
+    render();
+  }
+}
+
+initSelectors();
+changeView();
 </script>
 
 </body>
 </html>
-
-Das kann ich machen. Die vollständige WM-2026-Version mit:
-
-allen 48 Teams
-
-allen Gruppen A–L
-
-sämtlichen Gruppenspielen
-
-automatischer Tabellenberechnung
-
-automatischer Ermittlung der Qualifikanten
-
-Sechzehntelfinale, Achtelfinale, Viertelfinale, Halbfinale, Spiel um Platz 3 und Finale
-
-Flaggen aller Nationen
-
-Speicherung im Browser
-
-wird allerdings mehrere tausend Zeilen HTML/JavaScript umfassen. Das passt nicht sinnvoll in eine einzelne Chat-Nachricht.
-
-Ich kann dir stattdessen die komplette Datei als downloadbare index.html erzeugen, die du direkt auf deinem PC speichern und öffnen kannst.
-
-Soll die Seite:
-
-genau wie dein Bundesliga-Manager aussehen (gleiche Farben, gleiche Karten, nur mit WM-Daten),
-oder
-
-im gleichen Stil, aber moderner sein (WM-Header, echter Turnierbaum, bessere Tabellen, mobile Optimierung)?
-
-Ich würde Variante 2 empfehlen, weil der KO-Baum bei einer WM deutlich übersichtlicher wird.
-
-
-2
-
-Ich habe dir eine erste moderne WM-Manager-Datei erstellt:
-
-📄 WM_Manager_2026.html
-
-Wichtig: Das ist aktuell ein Grundgerüst mit modernem Design und KO-Baum. Für die vollständige Version mit:
-
-allen 48 WM-Teams
-
-Gruppen A–L
-
-allen 104 WM-Spielen
-
-automatischer Tabellenberechnung
-
-automatischer Qualifikation für die KO-Runde
-
-vollständigem Turnierbaum
-
-Speicherung im Browser
-
-Flaggen aller Nationen
-
-müsste ich die Anwendung deutlich umfangreicher aufbauen. Das ist eher ein kleines Projekt als eine einzelne HTML-Seite.
-
-Ich kann dir die komplette Profi-Version Schritt für Schritt erstellen. Dann würde ich als Nächstes:
-
-Alle 48 Teams und Gruppen einbauen.
-
-Die Gruppentabellen automatisch berechnen.
-
-Die KO-Runde automatisch befüllen.
-
-Einen echten Turnierbaum erzeugen.
-
-Alles in einer einzigen HTML-Datei lauffähig machen. 
-
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WM Manager 2026</title>
-<style>
-body{font-family:Arial,sans-serif;background:#eef2f7;margin:0}
-header{background:#d00000;color:#fff;padding:18px;text-align:center}
-.container{max-width:1400px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
-.card{background:#fff;border-radius:12px;padding:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.match{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee}
-.team{display:flex;align-items:center;gap:10px}
-.flag{font-size:28px}
-input.score{width:50px;text-align:center}
-table{width:100%;border-collapse:collapse}
-th,td{padding:8px;border-bottom:1px solid #ddd}
-th{background:#333;color:#fff}
-.bracket div{padding:8px;margin:6px 0;background:#f7f7f7;border-radius:6px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<header>
-<h1>🏆 WM Manager 2026</h1>
-<p>Gruppenphase + KO-Runde</p>
-</header>
-
-<div class="container">
-<div class="grid">
-
-<div class="card">
-<h2>Gruppe E</h2>
-
-<div class="match">
-<div class="team"><span class="flag">🇩🇪</span>Deutschland</div>
-<div>
-<input class="score" type="number"> :
-<input class="score" type="number">
-</div>
-<div class="team"><span class="flag">🇨🇼</span>Curaçao</div>
-</div>
-
-<div class="match">
-<div class="team"><span class="flag">🇨🇮</span>Elfenbeinküste</div>
-<div>
-<input class="score" type="number"> :
-<input class="score" type="number">
-</div>
-<div class="team"><span class="flag">🇪🇨</span>Ecuador</div>
-</div>
-
-<h2>📊 Tabelle</h2>
-<table>
-<thead>
-<tr><th>Team</th><th>Pkt</th><th>Tore</th></tr>
-</thead>
-<tbody>
-<tr><td>🇩🇪 Deutschland</td><td>0</td><td>0:0</td></tr>
-<tr><td>🇨🇮 Elfenbeinküste</td><td>0</td><td>0:0</td></tr>
-<tr><td>🇨🇼 Curaçao</td><td>0</td><td>0:0</td></tr>
-<tr><td>🇪🇨 Ecuador</td><td>0</td><td>0:0</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="card">
-<h2>🏆 KO-Phase</h2>
-<div class="bracket">
-<h3>Sechzehntelfinale</h3>
-<div>1A vs 3C</div>
-<div>2B vs 2F</div>
-
-<h3>Achtelfinale</h3>
-<div>Sieger S1 vs Sieger S2</div>
-
-<h3>Viertelfinale</h3>
-<div>VF 1</div>
-
-<h3>Halbfinale</h3>
-<div>HF 1</div>
-
-<h3>Finale</h3>
-<div>🏆 Weltmeister 2026</div>
-</div>
-</div>
-
-</div>
-</div>
-</body>
-</html>
-
-
