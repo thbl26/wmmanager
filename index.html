@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WM 2026 Manager</title>
+<title>WM Manager 2026</title>
 
 <style>
 body {
@@ -43,7 +43,7 @@ h1 {
   background: white;
   margin: 12px auto;
   padding: 18px;
-  width: min(850px, calc(100% - 24px));
+  width: min(920px, calc(100% - 24px));
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -58,12 +58,14 @@ h1 {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 230px;
+  min-width: 260px;
   justify-content: center;
 }
 
-.teamName {
-  font-weight: bold;
+.teamSide select {
+  padding: 8px;
+  font-size: 14px;
+  min-width: 180px;
 }
 
 .flag {
@@ -73,6 +75,7 @@ h1 {
   border-radius: 4px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
   background: #eee;
+  flex-shrink: 0;
 }
 
 .match input {
@@ -153,7 +156,7 @@ td img {
 
 .koGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
   width: min(1300px, calc(100% - 24px));
   margin: 20px auto;
@@ -204,7 +207,7 @@ td img {
 
 @media(max-width: 700px) {
   .teamSide {
-    min-width: 140px;
+    min-width: 100%;
   }
   .match {
     padding: 12px;
@@ -220,7 +223,7 @@ td img {
 <body>
 
 <h1>🏆 WM Manager 2026</h1>
-<div class="subtitle">Im Stil deines Bundesliga-Managers — mit Länderflaggen, Gruppenphase und K.-o.-Runde</div>
+<div class="subtitle">Mit Länderauswahl, Flaggen, Gruppenphase und K.-o.-Runde</div>
 
 <div class="topbar">
   <label>Ansicht:</label>
@@ -246,57 +249,46 @@ const teams = {
   "RSA": {name:"Südafrika", flag:"https://flagcdn.com/w80/za.png"},
   "KOR": {name:"Südkorea", flag:"https://flagcdn.com/w80/kr.png"},
   "CZE": {name:"Tschechien", flag:"https://flagcdn.com/w80/cz.png"},
-
   "CAN": {name:"Kanada", flag:"https://flagcdn.com/w80/ca.png"},
   "BIH": {name:"Bosnien-Herzegowina", flag:"https://flagcdn.com/w80/ba.png"},
   "QAT": {name:"Katar", flag:"https://flagcdn.com/w80/qa.png"},
   "SUI": {name:"Schweiz", flag:"https://flagcdn.com/w80/ch.png"},
-
   "BRA": {name:"Brasilien", flag:"https://flagcdn.com/w80/br.png"},
   "MAR": {name:"Marokko", flag:"https://flagcdn.com/w80/ma.png"},
   "HTI": {name:"Haiti", flag:"https://flagcdn.com/w80/ht.png"},
   "SCO": {name:"Schottland", flag:"https://flagcdn.com/w80/gb-sct.png"},
-
   "USA": {name:"USA", flag:"https://flagcdn.com/w80/us.png"},
   "PAR": {name:"Paraguay", flag:"https://flagcdn.com/w80/py.png"},
   "AUS": {name:"Australien", flag:"https://flagcdn.com/w80/au.png"},
   "TUR": {name:"Türkei", flag:"https://flagcdn.com/w80/tr.png"},
-
   "GER": {name:"Deutschland", flag:"https://flagcdn.com/w80/de.png"},
   "CUW": {name:"Curaçao", flag:"https://flagcdn.com/w80/cw.png"},
   "CIV": {name:"Elfenbeinküste", flag:"https://flagcdn.com/w80/ci.png"},
   "ECU": {name:"Ecuador", flag:"https://flagcdn.com/w80/ec.png"},
-
   "NED": {name:"Niederlande", flag:"https://flagcdn.com/w80/nl.png"},
   "JPN": {name:"Japan", flag:"https://flagcdn.com/w80/jp.png"},
   "SWE": {name:"Schweden", flag:"https://flagcdn.com/w80/se.png"},
   "TUN": {name:"Tunesien", flag:"https://flagcdn.com/w80/tn.png"},
-
   "BEL": {name:"Belgien", flag:"https://flagcdn.com/w80/be.png"},
   "EGY": {name:"Ägypten", flag:"https://flagcdn.com/w80/eg.png"},
   "IRI": {name:"Iran", flag:"https://flagcdn.com/w80/ir.png"},
   "NZL": {name:"Neuseeland", flag:"https://flagcdn.com/w80/nz.png"},
-
   "ESP": {name:"Spanien", flag:"https://flagcdn.com/w80/es.png"},
   "CPV": {name:"Kap Verde", flag:"https://flagcdn.com/w80/cv.png"},
   "KSA": {name:"Saudi-Arabien", flag:"https://flagcdn.com/w80/sa.png"},
   "URU": {name:"Uruguay", flag:"https://flagcdn.com/w80/uy.png"},
-
   "FRA": {name:"Frankreich", flag:"https://flagcdn.com/w80/fr.png"},
   "SEN": {name:"Senegal", flag:"https://flagcdn.com/w80/sn.png"},
   "IRQ": {name:"Irak", flag:"https://flagcdn.com/w80/iq.png"},
   "NOR": {name:"Norwegen", flag:"https://flagcdn.com/w80/no.png"},
-
   "ARG": {name:"Argentinien", flag:"https://flagcdn.com/w80/ar.png"},
   "DZA": {name:"Algerien", flag:"https://flagcdn.com/w80/dz.png"},
   "AUT": {name:"Österreich", flag:"https://flagcdn.com/w80/at.png"},
   "JOR": {name:"Jordanien", flag:"https://flagcdn.com/w80/jo.png"},
-
   "POR": {name:"Portugal", flag:"https://flagcdn.com/w80/pt.png"},
   "COD": {name:"DR Kongo", flag:"https://flagcdn.com/w80/cd.png"},
   "UZB": {name:"Usbekistan", flag:"https://flagcdn.com/w80/uz.png"},
   "COL": {name:"Kolumbien", flag:"https://flagcdn.com/w80/co.png"},
-
   "ENG": {name:"England", flag:"https://flagcdn.com/w80/gb-eng.png"},
   "CRO": {name:"Kroatien", flag:"https://flagcdn.com/w80/hr.png"},
   "GHA": {name:"Ghana", flag:"https://flagcdn.com/w80/gh.png"},
@@ -318,20 +310,15 @@ const groups = {
   L:["ENG","CRO","GHA","PAN"]
 };
 
-const defaultMatches = [
-  ["A","MEX","RSA"],["A","KOR","CZE"],["A","CZE","RSA"],["A","MEX","KOR"],["A","CZE","MEX"],["A","RSA","KOR"],
-  ["B","CAN","BIH"],["B","QAT","SUI"],["B","SUI","BIH"],["B","CAN","QAT"],["B","SUI","CAN"],["B","BIH","QAT"],
-  ["C","BRA","MAR"],["C","HTI","SCO"],["C","SCO","MAR"],["C","BRA","HTI"],["C","SCO","BRA"],["C","MAR","HTI"],
-  ["D","USA","PAR"],["D","AUS","TUR"],["D","USA","AUS"],["D","TUR","PAR"],["D","TUR","USA"],["D","PAR","AUS"],
-  ["E","GER","CUW"],["E","CIV","ECU"],["E","GER","CIV"],["E","ECU","CUW"],["E","ECU","GER"],["E","CUW","CIV"],
-  ["F","NED","JPN"],["F","SWE","TUN"],["F","NED","SWE"],["F","TUN","JPN"],["F","TUN","NED"],["F","JPN","SWE"],
-  ["G","BEL","EGY"],["G","IRI","NZL"],["G","BEL","IRI"],["G","NZL","EGY"],["G","NZL","BEL"],["G","EGY","IRI"],
-  ["H","ESP","CPV"],["H","KSA","URU"],["H","ESP","KSA"],["H","URU","CPV"],["H","URU","ESP"],["H","CPV","KSA"],
-  ["I","FRA","SEN"],["I","IRQ","NOR"],["I","FRA","IRQ"],["I","NOR","SEN"],["I","NOR","FRA"],["I","SEN","IRQ"],
-  ["J","ARG","DZA"],["J","AUT","JOR"],["J","ARG","AUT"],["J","JOR","DZA"],["J","JOR","ARG"],["J","DZA","AUT"],
-  ["K","POR","COD"],["K","UZB","COL"],["K","POR","UZB"],["K","COL","COD"],["K","COL","POR"],["K","COD","UZB"],
-  ["L","ENG","CRO"],["L","GHA","PAN"],["L","ENG","GHA"],["L","PAN","CRO"],["L","PAN","ENG"],["L","CRO","GHA"]
-].map((m,i)=>({id:"G"+(i+1), group:m[0], team1:m[1], team2:m[2], t1:"", t2:""}));
+const defaultMatches = [];
+Object.entries(groups).forEach(([group, arr]) => {
+  defaultMatches.push({id:group+"-1", group, team1:arr[0], team2:arr[1], t1:"", t2:""});
+  defaultMatches.push({id:group+"-2", group, team1:arr[2], team2:arr[3], t1:"", t2:""});
+  defaultMatches.push({id:group+"-3", group, team1:arr[0], team2:arr[2], t1:"", t2:""});
+  defaultMatches.push({id:group+"-4", group, team1:arr[3], team2:arr[1], t1:"", t2:""});
+  defaultMatches.push({id:group+"-5", group, team1:arr[3], team2:arr[0], t1:"", t2:""});
+  defaultMatches.push({id:group+"-6", group, team1:arr[1], team2:arr[2], t1:"", t2:""});
+});
 
 const koRounds = [
   {key:"R32", name:"Sechzehntelfinale", count:16},
@@ -342,7 +329,19 @@ const koRounds = [
   {key:"F", name:"Finale", count:1}
 ];
 
+function allTeamOptions(selected){
+  return Object.entries(teams)
+    .sort((a,b)=>a[1].name.localeCompare(b[1].name))
+    .map(([code,t])=>`<option value="${code}" ${code===selected ? "selected" : ""}>${t.name}</option>`)
+    .join("");
+}
+
 function img(code){
+  if(!code || !teams[code]) return "";
+  return `<img src="${teams[code].flag}" class="flag" onerror="this.src='${fallbackLogo}'">`;
+}
+
+function imgSmall(code){
   if(!code || !teams[code]) return "";
   return `<img src="${teams[code].flag}" onerror="this.src='${fallbackLogo}'">`;
 }
@@ -350,7 +349,7 @@ function img(code){
 function teamLabel(code){
   if(!code) return "offen";
   if(!teams[code]) return code;
-  return `${img(code)} ${teams[code].name}`;
+  return `${imgSmall(code)} ${teams[code].name}`;
 }
 
 function loadData(){
@@ -401,6 +400,14 @@ function saveKo(round, index, field, value){
   saveData(data);
 }
 
+function saveKoTeam(round, index, side, value){
+  const data = loadData();
+  data.ko = getKo();
+  data.ko[round][index][side] = value;
+  saveData(data);
+  renderKo();
+}
+
 function initSelectors(){
   const groupSelect = document.getElementById("groupSelect");
   groupSelect.innerHTML = Object.keys(groups).map(g=>`<option value="${g}">Gruppe ${g}</option>`).join("");
@@ -428,11 +435,19 @@ function renderMatches(){
   matches.forEach(m=>{
     html += `
     <div class="match">
-      <div class="teamSide">${img(m.team1)} <span class="teamName">${teams[m.team1].name}</span></div>
+      <div class="teamSide">
+        ${img(m.team1)}
+        <select onchange="saveMatch('${m.id}','team1',this.value)">${allTeamOptions(m.team1)}</select>
+      </div>
+
       <input type="number" value="${m.t1}" onchange="saveMatch('${m.id}','t1',this.value)">
       <span style="font-size:18px;">:</span>
       <input type="number" value="${m.t2}" onchange="saveMatch('${m.id}','t2',this.value)">
-      <div class="teamSide">${img(m.team2)} <span class="teamName">${teams[m.team2].name}</span></div>
+
+      <div class="teamSide">
+        <select onchange="saveMatch('${m.id}','team2',this.value)">${allTeamOptions(m.team2)}</select>
+        ${img(m.team2)}
+      </div>
     </div>`;
   });
 
@@ -448,6 +463,10 @@ function calcTable(group){
   });
 
   getMatches().filter(m=>m.group===group).forEach(m=>{
+    [m.team1, m.team2].forEach(code => {
+      if(code && !table[code]) table[code] = {team:code, points:0, gf:0, ga:0, gd:0, played:0, wins:0, draws:0, losses:0};
+    });
+
     if(m.t1==="" || m.t2==="") return;
 
     const a = parseInt(m.t1);
@@ -516,9 +535,9 @@ function qualifiers(){
 
   Object.keys(groups).forEach(g=>{
     const t = calcTable(g);
-    first.push(t[0].team);
-    second.push(t[1].team);
-    thirds.push({...t[2], group:g});
+    if(t[0]) first.push(t[0].team);
+    if(t[1]) second.push(t[1].team);
+    if(t[2]) thirds.push({...t[2], group:g});
   });
 
   thirds.sort((a,b)=>
@@ -552,6 +571,13 @@ function winner(m){
   return a>b ? m.team1 : m.team2;
 }
 
+function loser(m){
+  const a = parseInt(m.t1);
+  const b = parseInt(m.t2);
+  if(Number.isNaN(a) || Number.isNaN(b) || !m.team1 || !m.team2 || a===b) return "";
+  return a>b ? m.team2 : m.team1;
+}
+
 function fillNextRounds(){
   const data = loadData();
   data.ko = getKo();
@@ -571,19 +597,18 @@ function fillNextRounds(){
     }
   });
 
-  const sf1 = data.ko.SF[0];
-  const sf2 = data.ko.SF[1];
-  function loser(m){
-    const a = parseInt(m.t1);
-    const b = parseInt(m.t2);
-    if(Number.isNaN(a) || Number.isNaN(b) || !m.team1 || !m.team2 || a===b) return "";
-    return a>b ? m.team2 : m.team1;
-  }
-  data.ko.P3[0].team1 = loser(sf1) || data.ko.P3[0].team1;
-  data.ko.P3[0].team2 = loser(sf2) || data.ko.P3[0].team2;
+  data.ko.P3[0].team1 = loser(data.ko.SF[0]) || data.ko.P3[0].team1;
+  data.ko.P3[0].team2 = loser(data.ko.SF[1]) || data.ko.P3[0].team2;
 
   saveData(data);
   renderKo();
+}
+
+function koTeamSelect(round, index, side, selected){
+  return `<select onchange="saveKoTeam('${round}',${index},'${side}',this.value)">
+    <option value="">offen</option>
+    ${allTeamOptions(selected)}
+  </select>`;
 }
 
 function renderKo(){
@@ -591,8 +616,8 @@ function renderKo(){
   let html = `
     <h2>🏆 K.-o.-Phase</h2>
     <div class="notice">
-      <b>Hinweis:</b> Klicke zuerst auf „KO aus Tabellen befüllen“. Danach kannst du Ergebnisse eintragen.
-      Bei Gleichstand wird noch kein Sieger übernommen — dann bitte z. B. nach Elfmeterschießen ein Siegergebnis eintragen.
+      Jetzt kannst du auch in der K.-o.-Phase die Länder manuell auswählen.
+      Optional kannst du den KO-Baum aus den Gruppentabellen befüllen lassen.
     </div>
     <button onclick="autoFillKo()">KO aus Tabellen befüllen</button>
     <button onclick="fillNextRounds()">Sieger weiter übernehmen</button>
@@ -605,13 +630,13 @@ function renderKo(){
       html += `<div class="koMatch">
         <div class="small">Spiel ${i+1}</div>
         <div class="koTeams">
-          <div>${teamLabel(m.team1)}</div>
+          <div>${img(m.team1)}<br>${koTeamSelect(round.key,i,"team1",m.team1)}</div>
           <div>
             <input type="number" value="${m.t1}" onchange="saveKo('${round.key}',${i},'t1',this.value)">
             :
             <input type="number" value="${m.t2}" onchange="saveKo('${round.key}',${i},'t2',this.value)">
           </div>
-          <div>${teamLabel(m.team2)}</div>
+          <div>${img(m.team2)}<br>${koTeamSelect(round.key,i,"team2",m.team2)}</div>
         </div>
       </div>`;
     });
@@ -623,7 +648,7 @@ function renderKo(){
 }
 
 function resetAll(){
-  if(confirm("Wirklich alle Ergebnisse löschen?")){
+  if(confirm("Wirklich alle Ergebnisse und Änderungen löschen?")){
     localStorage.removeItem("wmManager2026");
     render();
   }
